@@ -25,6 +25,15 @@ spec:
           volumeMounts:
             - name: shared-files
               mountPath: /var/www/html
+          lifecycle:
+            postStart:
+              exec:
+                command: 
+                  - "/bin/sh"
+                  - "-c"
+                  - >
+                    cp -pr /app/. /var/www/html &&
+                    chmod -R 777 /var/www/html/storage
         - image: nginx-hello:latest
           name: nginx
           ports:
@@ -32,6 +41,15 @@ spec:
           volumeMounts:
             - name: shared-files
               mountPath: /var/www/html
+          lifecycle:
+            postStart: 
+              exec:
+                command: 
+                  - "/bin/sh"
+                  - "-c"
+                  - >
+                   
+                   nginx -s reload
 ---
 apiVersion: v1
 kind: Service
@@ -45,6 +63,7 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    name: http
+    nodePort: 30000
+    name: http    
   selector:
     app: hello

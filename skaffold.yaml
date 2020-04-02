@@ -5,6 +5,8 @@ metadata:
 build:
   artifacts:
   - image: hello
+    docker:
+      dockerfile: Dockerfile
   - image: nginx-hello
     docker:
       dockerfile: Dockerfile-nginx
