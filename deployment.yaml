@@ -32,8 +32,7 @@ spec:
                   - "/bin/sh"
                   - "-c"
                   - >
-                    cp -pr /app/. /var/www/html &&
-                    chmod -R 777 /var/www/html/storage
+                    cp -pr /app/. /var/www/html
         - image: nginx-hello:latest
           name: nginx
           ports:
