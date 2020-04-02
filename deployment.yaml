@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  labels:
+    app: hello
+    team: SRE
+spec:
+  selector:
+    matchLabels:
+      app: hello
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hello
+        team: SRE
+    spec:
+      volumes:
+        - name: shared-files
+          emptyDir: {} 
+      containers:      
+        - image: hello:latest
+          name: php-fpm
+          volumeMounts:
+            - name: shared-files
+              mountPath: /var/www/html
+        - image: nginx-hello:latest
+          name: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shared-files
+              mountPath: /var/www/html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  labels:
+    app: hello
+    team: SRE
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  selector:
+    app: hello

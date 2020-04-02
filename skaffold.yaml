@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta1
+kind: Config
+metadata:
+  name: hello
+build:
+  artifacts:
+  - image: hello
+  - image: nginx-hello
+    docker:
+      dockerfile: Dockerfile-nginx
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yaml
